@@ -4,6 +4,7 @@
 Este proyecto consiste en el desarrollo de una aplicación funcional en Java utilizando Spring Boot, que implementa un microservicio RESTful encargado de gestionar el stock de productos. La solución fue diseñada cumpliendo con los requisitos establecidos en la consigna de la cátedra, priorizando la escalabilidad, la seguridad y el rendimiento.
 
 📋 Objetivos 
+
 ✅ Implementación de un microservicio en Java con Spring Boot.
 
 ✅ Persistencia de datos en una base de datos NoSQL (MongoDB).

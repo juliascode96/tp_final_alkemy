@@ -78,4 +78,14 @@ public class ProductoController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @PatchMapping("/{id}/aumentar-stock")
+    public ResponseEntity<ProductoDTO> addStock(@PathVariable String id, @RequestParam Integer cantidad) {
+        try {
+            ProductoDTO producto = productoService.addStock(id, cantidad);
+            return producto != null ? ResponseEntity.ok(producto) : ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

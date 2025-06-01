@@ -104,4 +104,15 @@ public class ProductoService implements IProductoService {
                 })
                 .orElse(null);
     }
+
+    @Override
+    public ProductoDTO addStock(String id, Integer cantidad) {
+        return productoRepository.findById(id)
+                .map(existingProducto -> {
+                    existingProducto.setStock(existingProducto.getStock() + cantidad);
+                    ProductoModel updatedProducto = productoRepository.save(existingProducto);
+                    return productoMapper.toDTO(updatedProducto);
+                })
+                .orElse(null);
+    }
 }

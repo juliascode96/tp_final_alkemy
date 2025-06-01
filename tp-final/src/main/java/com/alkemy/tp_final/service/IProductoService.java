@@ -18,4 +18,5 @@ public interface IProductoService {
     List<ProductoDTO> getByNombreContaining(String nombre);
     ProductoDTO updateProducto(String id, ProductoDTO productoDTO);
     ProductoDTO reduceStock(String id, Integer cantidad);
+    ProductoDTO addStock(String id, Integer cantidad);
 }

@@ -2,6 +2,8 @@ package com.alkemy.tp_final.controller;
 
 import com.alkemy.tp_final.dto.ProductoDTO;
 import com.alkemy.tp_final.service.IProductoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,11 @@ public class ProductoController {
     @GetMapping
     public ResponseEntity<List<ProductoDTO>> getAllProductos() {
         return ResponseEntity.ok(productoService.getAllProductos());
+    }
+
+    @GetMapping("/paginado")
+    public ResponseEntity<Page<ProductoDTO>> getPaginatedProductos(Pageable pageable) {
+        return ResponseEntity.ok(productoService.getPaginatedProductos(pageable));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

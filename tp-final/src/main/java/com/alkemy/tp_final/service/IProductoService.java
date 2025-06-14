@@ -1,6 +1,8 @@
 package com.alkemy.tp_final.service;
 
 import com.alkemy.tp_final.dto.ProductoDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +13,7 @@ public interface IProductoService {
     ProductoDTO postProducto(ProductoDTO productoDTO);
     ProductoDTO getById(String id);
     List<ProductoDTO> getAllProductos();
+    public Page<ProductoDTO> getPaginatedProductos(Pageable pageable);
     void deleteProducto(String id);
     Optional<ProductoDTO> getByName(String nombre);
     List<ProductoDTO> getByPrecioRange(Double min, Double max);

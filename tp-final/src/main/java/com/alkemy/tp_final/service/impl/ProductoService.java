@@ -5,20 +5,19 @@ import com.alkemy.tp_final.mapper.ProductoMapper;
 import com.alkemy.tp_final.model.ProductoModel;
 import com.alkemy.tp_final.repository.ProductoRepository;
 import com.alkemy.tp_final.service.IProductoService;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class ProductoService implements IProductoService {
     private final ProductoRepository productoRepository;
     private final ProductoMapper productoMapper;
-
-    public ProductoService(ProductoRepository productoRepository) {
-        this.productoRepository = productoRepository;
-        this.productoMapper = new ProductoMapper();
-    }
 
     @Override
     public ProductoDTO postProducto(ProductoDTO productoDTO) {
@@ -41,38 +40,40 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
+    public Page<ProductoDTO> getPaginatedProductos(Pageable pageable) {
+        return productoRepository.findAll(pageable)
+                .map(productoMapper::toDTO);
+    }
+
+    @Override
     public void deleteProducto(String id) {
         productoRepository.deleteById(id);
     }
 
     @Override
     public Optional<ProductoDTO> getByName(String nombre) {
-        return productoRepository.findAll().stream()
-                .filter(producto -> producto.getNombre().equalsIgnoreCase(nombre))
+        return productoRepository.findByNombreIgnoreCase(nombre).stream()
                 .findFirst()
                 .map(productoMapper::toDTO);
     }
 
     @Override
     public List<ProductoDTO> getByPrecioRange(Double min, Double max) {
-        return productoRepository.findAll().stream()
-                .filter(producto -> producto.getPrecio() >= min && producto.getPrecio() <= max)
+        return productoRepository.findByPrecioBetween(min, max).stream()
                 .map(productoMapper::toDTO)
                 .toList();
     }
 
     @Override
     public List<ProductoDTO> getByStockGreaterThan(Integer stock) {
-        return productoRepository.findAll().stream()
-                .filter(producto -> producto.getStock() > stock)
+        return productoRepository.findByStockGreaterThan(stock).stream()
                 .map(productoMapper::toDTO)
                 .toList();
     }
 
     @Override
     public List<ProductoDTO> getByNombreContaining(String nombre) {
-        return productoRepository.findAll().stream()
-                .filter(producto -> producto.getNombre().toLowerCase().contains(nombre.toLowerCase()))
+        return productoRepository.findByNombreContainingIgnoreCase(nombre).stream()
                 .map(productoMapper::toDTO)
                 .toList();
     }

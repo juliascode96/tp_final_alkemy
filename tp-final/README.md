@@ -47,3 +47,37 @@ Control total sobre el flujo de autenticación, ideal en un proyecto donde se de
 Integración sencilla con Spring Security, lo cual permite proteger rutas y aplicar control de acceso basado en roles.
 
 OAuth2 es una excelente opción para aplicaciones que requieren autenticación delegada (como iniciar sesión con Google o GitHub), pero se consideró innecesariamente compleja para este caso de uso puntual.
+
+### ⚙️ Análisis y optimización del rendimiento (VisualVM)
+
+Como parte del proceso de mejora del rendimiento, se utilizó **VisualVM** para analizar el comportamiento de la aplicación en tiempo de ejecución. Esta herramienta permitió identificar posibles cuellos de botella relacionados con el uso de CPU, memoria y carga de objetos.
+
+#### 🔍 Problemas detectados
+
+- Uso excesivo de **`findAll()` y filtrado con Streams** en memoria, lo cual implica traer todos los productos desde la base de datos y aplicar filtros desde la lógica de negocio. Esto puede escalar mal en presencia de grandes volúmenes de datos.
+- Instanciación manual de componentes (`Mapper`) dentro de las clases de servicio, en lugar de aprovechar la inyección de dependencias de Spring.
+
+#### ✅ Acciones realizadas
+
+- Se comenzaron a reemplazar los filtros manuales por métodos de repositorio específicos, delegando las operaciones a MongoDB para mejorar la eficiencia.
+
+  Ejemplo:  
+  En lugar de:
+```java
+  productoRepository.findAll().stream().filter(...);
+```
+Se propone:
+
+```java
+  productoRepository.findByStockGreaterThan(...);
+```
+
+- Se modificó el servicio para que reciba el mapper mediante **inyección de dependencias**, evitando instancias innecesarias y mejorando la testabilidad.
+- Se implementó **paginación** (`Pageable`) en el endpoint de búsqueda de productos, permitiendo manejar grandes volúmenes de datos sin cargar todo en memoria.
+
+
+#### 💡 Recomendaciones para futuras mejoras
+
+- Implementar **paginación** (`Pageable`) en los endpoints que devuelven listas completas de productos **filtrados** para evitar el procesamiento masivo de datos en memoria.
+- Reemplazar **ModelMapper** por **MapStruct**, una biblioteca que genera código de mapeo en tiempo de compilación, eliminando el uso de reflexión y mejorando significativamente el rendimiento.
+- Analizar los endpoints más utilizados mediante **trazas de CPU en VisualVM** y detectar posibles mejoras adicionales en consultas, serialización de datos y uso de colecciones.

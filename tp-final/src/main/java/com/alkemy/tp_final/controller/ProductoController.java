@@ -3,6 +3,7 @@ package com.alkemy.tp_final.controller;
 import com.alkemy.tp_final.dto.ProductoDTO;
 import com.alkemy.tp_final.service.IProductoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ProductoDTO> postProducto(@RequestBody ProductoDTO productoDTO) {
         return ResponseEntity.ok(productoService.postProducto(productoDTO));
@@ -34,6 +36,7 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.getAllProductos());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProducto(@PathVariable String id) {
         productoService.deleteProducto(id);
@@ -63,12 +66,14 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.getByNombreContaining(nombre));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ProductoDTO> updateProducto(@PathVariable String id, @RequestBody ProductoDTO productoDTO) {
         ProductoDTO updated = productoService.updateProducto(id, productoDTO);
         return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PatchMapping("/{id}/reducir-stock")
     public ResponseEntity<ProductoDTO> reduceStock(@PathVariable String id, @RequestParam Integer cantidad) {
         try {
@@ -79,6 +84,7 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/aumentar-stock")
     public ResponseEntity<ProductoDTO> addStock(@PathVariable String id, @RequestParam Integer cantidad) {
         try {

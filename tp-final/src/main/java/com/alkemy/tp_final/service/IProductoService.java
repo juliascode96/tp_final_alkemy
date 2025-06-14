@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public interface IProductoService {
     ProductoDTO postProducto(ProductoDTO productoDTO);
     ProductoDTO getById(String id);
     List<ProductoDTO> getAllProductos();
+    public CompletableFuture<List<ProductoDTO>> getAllProductosAsync();
     public Page<ProductoDTO> getPaginatedProductos(Pageable pageable);
     void deleteProducto(String id);
     Optional<ProductoDTO> getByName(String nombre);
@@ -22,4 +24,5 @@ public interface IProductoService {
     ProductoDTO updateProducto(String id, ProductoDTO productoDTO);
     ProductoDTO reduceStock(String id, Integer cantidad);
     ProductoDTO addStock(String id, Integer cantidad);
+    public CompletableFuture<Void> procesarStockPesado();
 }

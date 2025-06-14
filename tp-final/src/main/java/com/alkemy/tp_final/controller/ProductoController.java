@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/productos")
@@ -36,6 +37,12 @@ public class ProductoController {
     @GetMapping
     public ResponseEntity<List<ProductoDTO>> getAllProductos() {
         return ResponseEntity.ok(productoService.getAllProductos());
+    }
+
+    @GetMapping("/async")
+    public CompletableFuture<ResponseEntity<List<ProductoDTO>>> getAllProductosAsync() {
+        return productoService.getAllProductosAsync()
+                .thenApply(ResponseEntity::ok);
     }
 
     @GetMapping("/paginado")
@@ -100,5 +107,12 @@ public class ProductoController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/procesar-stock")
+    public ResponseEntity<Void> procesarStockPesado() {
+        productoService.procesarStockPesado();
+        return ResponseEntity.accepted().build(); // 202 Accepted: proceso iniciado
     }
 }

@@ -103,8 +103,9 @@ Asegurate de reemplazar los valores [user] y [password] en el archivo docker-com
     ```bash
     docker build -t stock-management-app .
     ```
+   
 3. **Ejecutá el contenedor**:
-   ```bash
+    ```bash
     docker run -p 8080:8080 stock-management-app
     ```
 4. **Accedé a la aplicación**: Abrí tu navegador y dirigite a `http://localhost:8080/api/productos` para interactuar con el microservicio.

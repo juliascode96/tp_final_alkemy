@@ -27,5 +27,12 @@ public class ProductoDTO {
 
     @Schema(description = "Stock disponible del producto", example = "20")
     private Integer stock;
+
+    public ProductoDTO(String number, String arrozIntegral, double v, int i) {
+        this.id = number;
+        this.nombre = arrozIntegral;
+        this.precio = v;
+        this.stock = i;
+    }
 }
 

@@ -101,8 +101,8 @@ Para facilitar el despliegue y la portabilidad de la aplicación, se creó un **
 Asegurate de reemplazar los valores [user] y [password] en el archivo docker-compose.yml por tus credenciales reales de MongoDB Atlas.
 2. **Construí la imagen de Docker**:
     ```bash
-   docker build -t stock-management-app .
-   ```
+    docker build -t stock-management-app .
+    ```
 3. **Ejecutá el contenedor**:
    ```bash
     docker run -p 8080:8080 stock-management-app

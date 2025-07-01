@@ -81,3 +81,33 @@ Se propone:
 - Implementar **paginación** (`Pageable`) en los endpoints que devuelven listas completas de productos **filtrados** para evitar el procesamiento masivo de datos en memoria.
 - Reemplazar **ModelMapper** por **MapStruct**, una biblioteca que genera código de mapeo en tiempo de compilación, eliminando el uso de reflexión y mejorando significativamente el rendimiento.
 - Analizar los endpoints más utilizados mediante **trazas de CPU en VisualVM** y detectar posibles mejoras adicionales en consultas, serialización de datos y uso de colecciones.
+
+### 🐳 Contenerización con Docker
+Para facilitar el despliegue y la portabilidad de la aplicación, se creó un **Dockerfile** que define cómo construir la imagen del microservicio. Este enfoque permite ejecutar la aplicación en cualquier entorno que soporte Docker, garantizando consistencia en las versiones y configuraciones.
+### 📁 Archivos incluidos
+
+- `Dockerfile`: define cómo se construye la imagen de la aplicación Spring Boot.
+- `docker-compose.yml`: orquesta el despliegue de la aplicación junto con una base de datos MongoDB.
+
+### ▶️ Pasos para ejecutar el proyecto
+
+1. **Cloná el repositorio** (si aún no lo hiciste):
+
+   ```bash
+   git clone https://github.com/tu-usuario/tp-final.git
+   cd tp-final
+    ```
+   
+Asegurate de reemplazar los valores [user] y [password] en el archivo docker-compose.yml por tus credenciales reales de MongoDB Atlas.
+2. **Construí la imagen de Docker**:
+3. ```bash
+   docker build -t stock-management-app .
+   ```
+4. **Ejecutá el contenedor**:
+   ```bash
+    docker run -p 8080:8080 stock-management-app
+    ```
+5. **Accedé a la aplicación**: Abrí tu navegador y dirigite a `http://localhost:8080/api/productos` para interactuar con el microservicio.
+6. **Configuración de la base de datos**: Asegurate de tener una instancia de MongoDB corriendo en `localhost:27017` o configurá la conexión en el archivo `application.properties` según sea necesario.
+7. **Pruebas**: Podés utilizar herramientas como Postman o cURL para probar los endpoints del microservicio. Asegurate de incluir el token JWT en las cabeceras para acceder a los recursos protegidos.
+8. **Documentación de la API**: La documentación de los endpoints está disponible en Swagger UI, accesible en `http://localhost:8080/swagger-ui.html`.
